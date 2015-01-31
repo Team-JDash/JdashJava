@@ -1,13 +1,16 @@
 package tutoPlugins;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -30,6 +33,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	 */
 	private static final long serialVersionUID = 4932662545205980307L;
 	
+	private JDesktopPane MainPane;
+	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu stringPluginsMenu;
@@ -40,6 +45,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem runPluginsMenuItem;
 	private JTextArea stringTextArea;
 	private JTextArea intTextArea;
+	//private MyHorloge clock;
 	
 	private PluginsLoader pluginsLoader;
 	private ArrayList files;
@@ -65,6 +71,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.runPluginsMenuItem = new JMenuItem();
 		this.stringTextArea = new JTextArea();
 		this.intTextArea = new JTextArea();
+		//this.clock = new MyHorloge();
 		
 		//menuBar
 		this.menuBar.add(this.fileMenu);
@@ -104,13 +111,28 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.intTextArea.setBorder(new LineBorder(Color.black));
 		this.intTextArea.setText("Zone pour les plugins sur les int");
 		
+	
+		
 		//this
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new GridLayout(2,1));
+		this.setLayout(new GridLayout(3,1));
 		this.getContentPane().add(this.stringTextArea);
 		this.getContentPane().add(this.intTextArea);
+		
+		//----------------------------------------------
+		JDesktopPane desktop = new JDesktopPane();
+		this.add(desktop);
+		/* Création de la fenêtre interne */
+		JInternalFrame jif = new JInternalFrame("Fenetre");
+		jif.setSize(200, 200);
+
+		/* Ajout au desktop */
+		desktop.add(jif);
+
+		jif.setVisible(true);
+		//-------------------------------------------------
 	}
 	
 	/**
