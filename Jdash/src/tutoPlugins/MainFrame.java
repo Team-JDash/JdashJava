@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 
 import javax.swing.JDesktopPane;
@@ -34,6 +35,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 4932662545205980307L;
 	
 	private JDesktopPane MainPane;
+	private JTextArea testtext;
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
@@ -45,7 +47,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem runPluginsMenuItem;
 	private JTextArea stringTextArea;
 	private JTextArea intTextArea;
-	//private MyHorloge clock;
+	private MyHorloge clock;
 	
 	private PluginsLoader pluginsLoader;
 	private ArrayList files;
@@ -71,7 +73,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.runPluginsMenuItem = new JMenuItem();
 		this.stringTextArea = new JTextArea();
 		this.intTextArea = new JTextArea();
-		//this.clock = new MyHorloge();
+		this.testtext = new JTextArea();
 		
 		//menuBar
 		this.menuBar.add(this.fileMenu);
@@ -110,9 +112,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		//intTextArea
 		this.intTextArea.setBorder(new LineBorder(Color.black));
 		this.intTextArea.setText("Zone pour les plugins sur les int");
-		
-	
-		
+			
 		//this
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
@@ -122,15 +122,25 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.getContentPane().add(this.intTextArea);
 		
 		//----------------------------------------------
+		this.testtext.setBorder(new LineBorder(Color.black));
+		this.testtext.setText("Zone de test text ! ");
 		JDesktopPane desktop = new JDesktopPane();
 		this.add(desktop);
 		/* Création de la fenêtre interne */
-		JInternalFrame jif = new JInternalFrame("Fenetre");
-		jif.setSize(200, 200);
+		JInternalFrame jif = new JInternalFrame("Fenetre",true,true,true,true);		
+		jif.setSize(200, 150);
+		jif.setBorder(null);
 
 		/* Ajout au desktop */
 		desktop.add(jif);
-
+		try {
+			jif.setMaximum(true);
+			((javax.swing.plaf.basic.BasicInternalFrameUI) jif.getUI()).setNorthPane(null);	
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		jif.add(this.testtext);
 		jif.setVisible(true);
 		//-------------------------------------------------
 	}
