@@ -18,6 +18,7 @@ public class PluginsLoader {
 	
 	private ArrayList classStringPlugins;
 	private ArrayList classIntPlugins;
+	private ArrayList classImagePlugins;
 	
 	/**
 	 * Constructeur par défaut
@@ -26,6 +27,7 @@ public class PluginsLoader {
 	public PluginsLoader(){
 		this.classIntPlugins = new ArrayList();
 		this.classStringPlugins = new ArrayList();
+		this.classImagePlugins = new ArrayList();
 	}
 	
 	/**
@@ -67,6 +69,23 @@ public class PluginsLoader {
 		return tmpPlugins;
 	}
 	
+	public ImagePlugins[] loadAllImagePlugins() throws Exception {
+		
+		this.initializeLoader();
+		
+		ImagePlugins[] tmpPlugins = new ImagePlugins[this.classImagePlugins.size()];
+		
+		for(int index = 0 ; index < tmpPlugins.length; index ++ ){
+			
+			//On créer une nouvelle instance de l'objet contenu dans la liste grâce à newInstance() 
+			//et on le cast en StringPlugins. Vu que la classe implémente StringPlugins, le cast est toujours correct
+			tmpPlugins[index] = (ImagePlugins)((Class)this.classImagePlugins.get(index)).newInstance() ;
+			
+		}
+		
+		return tmpPlugins;
+	}
+	
 	/**
 	 * Fonction de chargement de tout les plugins de type IntPlugins
 	 * @return Une collection de IntPlugins contenant les instances des plugins
@@ -97,7 +116,7 @@ public class PluginsLoader {
 		}
 
 		//Pour eviter le double chargement des plugins
-		if(this.classIntPlugins.size() != 0 || this.classStringPlugins.size() != 0 ){
+		if(this.classIntPlugins.size() != 0 || this.classStringPlugins.size() != 0 || this.classImagePlugins.size() != 0){
 			return ;
 		}
 		
@@ -153,6 +172,10 @@ public class PluginsLoader {
 							if( tmpClass.getInterfaces()[i].getName().toString().equals("tutoPlugins.plugins.IntPlugins") ) {
 								this.classIntPlugins.add(tmpClass);
 							}
+							else if(tmpClass.getInterfaces()[i].getName().toString().equals("tutoPlugins.plugins.ImagePlugins")){
+								this.classImagePlugins.add(tmpClass);
+							}
+						
 						}
 					}
 					

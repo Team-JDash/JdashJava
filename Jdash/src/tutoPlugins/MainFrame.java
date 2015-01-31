@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
+import tutoPlugins.plugins.ImagePlugins;
 import tutoPlugins.plugins.IntPlugins;
 import tutoPlugins.plugins.PluginsLoader;
 import tutoPlugins.plugins.StringPlugins;
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenu fileMenu;
 	private JMenu stringPluginsMenu;
 	private JMenu intPluginsMenu;
+	private JMenu ImagePlugingsMenu;
 	
 	private JMenuItem exitMenuItem;
 	private JMenuItem loadMenuItem;
@@ -53,12 +55,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	private ArrayList files;
 	private ArrayList stringPlugins;
 	private ArrayList intPlugins;
+	private ArrayList ImagePlugins;
 	
 	public MainFrame(){
 		this.pluginsLoader = new PluginsLoader();
 		this.files = new ArrayList();
 		this.stringPlugins = new ArrayList();
 		this.intPlugins = new ArrayList();
+		this.ImagePlugins = new ArrayList();
 		
 		this.initialize();
 	}
@@ -68,6 +72,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.fileMenu = new JMenu();
 		this.stringPluginsMenu = new JMenu();
 		this.intPluginsMenu = new JMenu();
+		this.ImagePlugingsMenu = new JMenu();
 		this.exitMenuItem = new JMenuItem();
 		this.loadMenuItem = new JMenuItem();
 		this.runPluginsMenuItem = new JMenuItem();
@@ -79,6 +84,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.menuBar.add(this.fileMenu);
 		this.menuBar.add(this.stringPluginsMenu);
 		this.menuBar.add(this.intPluginsMenu);
+		this.menuBar.add(this.ImagePlugingsMenu);
 		
 		//fileMenu
 		this.fileMenu.setText("Fichier");
@@ -92,6 +98,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		//intPluginsMenu
 		this.intPluginsMenu.setText("Manipulation de int");
+		
+		//imagepluginsmenu
+		this.ImagePlugingsMenu.setText("Manip' image");
 		
 		//exitMenuItem
 		this.exitMenuItem.setText("Fermer");
@@ -112,8 +121,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		//intTextArea
 		this.intTextArea.setBorder(new LineBorder(Color.black));
 		this.intTextArea.setText("Zone pour les plugins sur les int");
-			
-		//this
+		
+		//Zone de text pour l'internalFrame
+		this.testtext.setBorder(new LineBorder(Color.black));
+		this.testtext.setText("Zone de test text ! ");
+		
+		
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,10 +134,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.getContentPane().add(this.stringTextArea);
 		this.getContentPane().add(this.intTextArea);
 		
-		//----------------------------------------------
-		this.testtext.setBorder(new LineBorder(Color.black));
-		this.testtext.setText("Zone de test text ! ");
+		//---------------------INTERNAL FRAME---------31/01/2015---PAUL---
+		//On crée un desktopPane qui va recupérer toutes nos internal frame
 		JDesktopPane desktop = new JDesktopPane();
+		//On rajoute le desktop dans le dernier emplacement libre avec le GridLayout
 		this.add(desktop);
 		/* Création de la fenêtre interne */
 		JInternalFrame jif = new JInternalFrame("Fenetre",true,true,true,true);		
@@ -133,13 +146,14 @@ public class MainFrame extends JFrame implements ActionListener{
 
 		/* Ajout au desktop */
 		desktop.add(jif);
-		try {
+		try {//On remplie tout 'espace disponible puis on enlève toutes les barres pour avoir une fenetre "transparente"
 			jif.setMaximum(true);
 			((javax.swing.plaf.basic.BasicInternalFrameUI) jif.getUI()).setNorthPane(null);	
 		} catch (PropertyVetoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//On rajoute la zone de texte puis on rend le tout visible
 		jif.add(this.testtext);
 		jif.setVisible(true);
 		//-------------------------------------------------
@@ -173,6 +187,7 @@ public class MainFrame extends JFrame implements ActionListener{
 					
 					try {
 						this.fillStringPlugins(this.pluginsLoader.loadAllStringPlugins());
+						this.fillImagePlugins(this.pluginsLoader.loadAllImagePlugins());
 					} catch (Exception e) {
 						
 						e.printStackTrace();
@@ -214,6 +229,26 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		
 	}
+	
+	private void fillImagePlugins(ImagePlugins[] imagePlugins2){
+		
+		JMenuItem menuItem ;
+	
+		for(int index = 0 ; index < imagePlugins2.length; index ++ ){
+			this.ImagePlugins.add(imagePlugins2[index]);
+			
+			menuItem = new JMenuItem();
+			menuItem.setText(imagePlugins2[index].getLibelle() );
+			menuItem.addActionListener(this);
+			//Ajout dans la collection de JMenuItem pour détection du click
+			//this.stringPluginsMenuItem.add(menuItem);
+			//Ajout dans le menu
+			this.ImagePlugingsMenu.add(menuItem);
+		}
+		
+		
+	}
+	
 	
 	private void ActionFromPlugins(ActionEvent e){
 		
