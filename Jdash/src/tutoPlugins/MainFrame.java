@@ -230,15 +230,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 	}
 	
-	private void fillImagePlugins(ImagePlugins[] imagePlugins2){
+	private void fillImagePlugins(ImagePlugins[] imagePlugins){
 		
 		JMenuItem menuItem ;
 	
-		for(int index = 0 ; index < imagePlugins2.length; index ++ ){
-			this.ImagePlugins.add(imagePlugins2[index]);
+		for(int index = 0 ; index < imagePlugins.length; index ++ ){
+			this.ImagePlugins.add(imagePlugins[index]);
 			
 			menuItem = new JMenuItem();
-			menuItem.setText(imagePlugins2[index].getLibelle() );
+			menuItem.setText(imagePlugins[index].getLibelle() );
 			menuItem.addActionListener(this);
 			//Ajout dans la collection de JMenuItem pour détection du click
 			//this.stringPluginsMenuItem.add(menuItem);
@@ -268,6 +268,14 @@ public class MainFrame extends JFrame implements ActionListener{
 				
 				this.stringTextArea.setText( new Integer(res).toString() );
 				
+				return ;
+			}
+		}
+		
+		for(int index = 0 ; index < this.ImagePlugins.size(); index ++ ){
+			if(e.getActionCommand().equals( ((ImagePlugins)this.intPlugins.get(index)).getLibelle() )){
+				
+				this.stringTextArea.setText(((StringPlugins)this.stringPlugins.get(index)).actionOnString(this.stringTextArea.getText()));		
 				return ;
 			}
 		}

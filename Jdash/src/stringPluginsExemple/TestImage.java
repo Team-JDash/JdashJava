@@ -6,9 +6,10 @@ import tutoPlugins.plugins.StringPlugins;
 public class TestImage implements ImagePlugins {
 	 
 
-	public String actionOnPlugin(String ini) {
+	public String actionOnPlugin(String arg0) {
 		
-		return null;
+		//return " ** - " + arg0 + " - ** ";
+				return "First own iamge plugin mother fucker ! ";
 	}
 	
 	
