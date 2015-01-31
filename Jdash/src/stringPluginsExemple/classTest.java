@@ -11,7 +11,8 @@ public class classTest implements StringPlugins {
  
 	public String getLibelle() {
  
-		return "Ajouter de jolis caractères à la String";
+		return "Ajouter de jolis caractères à la String, like a boss !";
+		
 	}
  
 	public int getCategorie() {
