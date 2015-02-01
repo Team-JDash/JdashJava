@@ -56,15 +56,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem runPluginsMenuItem;
 	private JTextArea stringTextArea;
 	private JTextArea intTextArea;
-	private MyHorloge clock;
-	
+
 	private PluginsLoader pluginsLoader;
 	private ArrayList files;
 	private ArrayList stringPlugins;
 	private ArrayList intPlugins;
 	private ArrayList ImagePlugins;
-	
-
+	private JDesktopPane desktop = new JDesktopPane();
+	private JInternalFrame jif = new JInternalFrame("Fenetre",true,true,true,true);		
 	
 	public MainFrame(){
 		this.pluginsLoader = new PluginsLoader();
@@ -145,32 +144,32 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		//---------------------INTERNAL FRAME---------31/01/2015---PAUL---
 		//On crée un desktopPane qui va recupérer toutes nos internal frame
-		JDesktopPane desktop = new JDesktopPane();
+		
 		//On rajoute le desktop dans le dernier emplacement libre avec le GridLayout
 		this.add(desktop);
 		/* Création de la fenêtre interne */
-		JInternalFrame jif = new JInternalFrame("Fenetre",true,true,true,true);		
+		
 		jif.setSize(200, 150);
 		jif.setBorder(null);
 
 		/* Ajout au desktop */
-		desktop.add(jif);
-		try {//On remplie tout 'espace disponible puis on enlève toutes les barres pour avoir une fenetre "transparente"
-			jif.setMaximum(true);
-			((javax.swing.plaf.basic.BasicInternalFrameUI) jif.getUI()).setNorthPane(null);	
-		} catch (PropertyVetoException e) {
+		//desktop.add(jif);
+		//try {//On remplie tout 'espace disponible puis on enlève toutes les barres pour avoir une fenetre "transparente"
+		//	jif.setMaximum(true);
+		//	((javax.swing.plaf.basic.BasicInternalFrameUI) jif.getUI()).setNorthPane(null);	
+		//} catch (PropertyVetoException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		BufferedImage myPicture = null;
-		try {
-			myPicture = ImageIO.read(new File("C:\\Users\\MSIsilafamille!\\Documents\\APluginTest\\picture.jpg"));
-		} catch (IOException e) {
+		//	e.printStackTrace();
+	//	}
+	//	BufferedImage myPicture = null;
+	//	try {
+	//		myPicture = ImageIO.read(new File("C:\\Users\\MSIsilafamille!\\Documents\\APluginTest\\picture.jpg"));
+	//	} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-		jif.add(picLabel);
+	//		e.printStackTrace();
+	//	}
+	//	JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+	//	//jif.add(picLabel);
 		
 		//On rajoute la zone de texte puis on rend le tout visible
 		//jif.add(this.testtext);
@@ -296,7 +295,16 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 			if(e.getActionCommand().equals( ((ImagePlugins)this.ImagePlugins.get(index)).getLibelle() )){
 				
-				this.testtext.setText(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(this.stringTextArea.getText()));		
+				
+				//this.testtext.setText(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(this.stringTextArea.getText()));	
+				this.desktop.add(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(this.jif,this.desktop));
+				try {//On remplie tout 'espace disponible puis on enlève toutes les barres pour avoir une fenetre "transparente"
+					jif.setMaximum(true);
+					((javax.swing.plaf.basic.BasicInternalFrameUI) jif.getUI()).setNorthPane(null);	
+				} catch (PropertyVetoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				return ;
 			}
 		}
