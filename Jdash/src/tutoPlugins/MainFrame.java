@@ -1,17 +1,24 @@
 package tutoPlugins;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -56,6 +63,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	private ArrayList stringPlugins;
 	private ArrayList intPlugins;
 	private ArrayList ImagePlugins;
+	
+
 	
 	public MainFrame(){
 		this.pluginsLoader = new PluginsLoader();
@@ -153,8 +162,18 @@ public class MainFrame extends JFrame implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("C:\\Users\\MSIsilafamille!\\Documents\\APluginTest\\picture.jpg"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+		jif.add(picLabel);
+		
 		//On rajoute la zone de texte puis on rend le tout visible
-		jif.add(this.testtext);
+		//jif.add(this.testtext);
 		jif.setVisible(true);
 		//-------------------------------------------------
 	}
@@ -255,6 +274,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		for(int index = 0 ; index < this.stringPlugins.size(); index ++ )
 		{
 			if(e.getActionCommand().equals( ((StringPlugins)this.stringPlugins.get(index)).getLibelle() )){
+				System.out.println("Imageplugins size :"+this.stringPlugins.size());
 				this.stringTextArea.setText(((StringPlugins)this.stringPlugins.get(index)).actionOnString(this.stringTextArea.getText()));
 				
 				return ;
@@ -263,7 +283,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		for(int index = 0 ; index < this.intPlugins.size(); index ++ ){
 			if(e.getActionCommand().equals( ((IntPlugins)this.intPlugins.get(index)).getLibelle() )){
-				
+				System.out.println("Imageplugins size :"+this.intPlugins.size());
 				int res = ((IntPlugins)this.intPlugins.get(index)).actionOnInt( Integer.parseInt(this.stringTextArea.getText()) );
 				
 				this.stringTextArea.setText( new Integer(res).toString() );
@@ -273,9 +293,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		}
 		
 		for(int index = 0 ; index < this.ImagePlugins.size(); index ++ ){
-			if(e.getActionCommand().equals( ((ImagePlugins)this.intPlugins.get(index)).getLibelle() )){
+		
+			if(e.getActionCommand().equals( ((ImagePlugins)this.ImagePlugins.get(index)).getLibelle() )){
 				
-				this.stringTextArea.setText(((StringPlugins)this.stringPlugins.get(index)).actionOnString(this.stringTextArea.getText()));		
+				this.testtext.setText(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(this.stringTextArea.getText()));		
 				return ;
 			}
 		}
