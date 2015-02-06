@@ -15,7 +15,10 @@ import javax.swing.JPanel;
 import tutoPlugins.plugins.ImagePlugins;
 
 public class testclock implements ImagePlugins
+
+
 {
+	
 	public testclock()
 	{
 		fenetre=new JInternalFrame("JClock");
@@ -36,6 +39,31 @@ public class testclock implements ImagePlugins
 		fenetre.getContentPane().add(clockPanel);
 		fenetre.setSize(400,400);
 		fenetre.show();
+		clockThread=new ClockThread(this);
+		clockThread.start();
+		
+	}/* Fin constructeur*/
+	
+	public testclock(JInternalFrame jif)
+	{
+		fenetre=new JInternalFrame("JClock");
+		/*fenetre.addInternalFrameListener( new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+				System.exit(0);
+			}
+		});*/
+		
+		calend=new GregorianCalendar();
+		h=calend.get(GregorianCalendar.HOUR_OF_DAY);
+		min=calend.get(GregorianCalendar.MINUTE);
+		sec=calend.get(GregorianCalendar.SECOND);
+		
+		clockPanel=new ClockPanel();
+		jif.getContentPane().add(clockPanel);
+		jif.setSize(400,400);
+		jif.show();
 		clockThread=new ClockThread(this);
 		clockThread.start();
 		
@@ -119,7 +147,7 @@ public class testclock implements ImagePlugins
 	private Font font;
 	@Override
 	public String getLibelle() {
-		
+	
 		return "Horloge graphique";
 	}
 
@@ -131,8 +159,7 @@ public class testclock implements ImagePlugins
 
 	@Override
 	public Component actionOnPlugin(JInternalFrame jif, JDesktopPane desktop) {
-		new testclock();
-		jif=this.fenetre;
+		new testclock(jif);
 		return jif;
 	}
 	

@@ -119,14 +119,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.testtext.setBorder(new LineBorder(Color.black));
 		this.testtext.setText("Zone de test text ! ");
 		
-		testclock clok = new testclock();
+		//testclock clok = new testclock();
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new GridLayout(2,2));
 		this.getContentPane().add(this.stringTextArea);
 		//this.getContentPane().add(this.intTextArea);
-		this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
+	//	this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
 		
 		//---------------------INTERNAL FRAME---------31/01/2015---PAUL---
 		//On crée un desktopPane qui va recupérer toutes nos internal frame
@@ -137,7 +137,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		jif.setSize(200, 150);
 		jif.setBorder(null);
-
+		
 		/* Ajout au desktop */
 		//desktop.add(jif);
 		//try {//On remplie tout 'espace disponible puis on enlève toutes les barres pour avoir une fenetre "transparente"
