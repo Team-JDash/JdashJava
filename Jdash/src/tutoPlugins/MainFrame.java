@@ -1,20 +1,28 @@
 package tutoPlugins;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import tutoPlugins.plugins.ImagePlugins;
@@ -36,10 +44,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenu stringPluginsMenu;
 	private JMenu intPluginsMenu;
 	private JMenu ImagePlugingsMenu;
+	private JMenu Configuration;
 	
 	private JMenuItem exitMenuItem;
 	private JMenuItem loadMenuItem;
 	private JMenuItem runPluginsMenuItem;
+	private JMenuItem ConfigLayout;
 	private JTextArea stringTextArea;
 	private JTextArea intTextArea;
 
@@ -50,6 +60,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	private ArrayList ImagePlugins;
 	private JDesktopPane desktop = new JDesktopPane();
 	private JInternalFrame jif = new JInternalFrame("Fenetre",true,true,true,true);		
+	
+	private JTextField xField = new JTextField(5);
+    private JTextField yField = new JTextField(5);
 	
 	public MainFrame(){
 		this.pluginsLoader = new PluginsLoader();
@@ -67,6 +80,8 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.stringPluginsMenu = new JMenu();
 		this.intPluginsMenu = new JMenu();
 		this.ImagePlugingsMenu = new JMenu();
+		this.Configuration = new JMenu();
+		this.ConfigLayout = new JMenuItem();
 		this.exitMenuItem = new JMenuItem();
 		this.loadMenuItem = new JMenuItem();
 		this.runPluginsMenuItem = new JMenuItem();
@@ -79,6 +94,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.menuBar.add(this.stringPluginsMenu);
 		this.menuBar.add(this.intPluginsMenu);
 		this.menuBar.add(this.ImagePlugingsMenu);
+		this.menuBar.add(this.Configuration);
 		
 		//fileMenu
 		this.fileMenu.setText("Fichier");
@@ -108,6 +124,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.runPluginsMenuItem.setText("Lancer les plugins charger");
 		this.runPluginsMenuItem.addActionListener(this);
 		
+		//Config du layout
+		this.Configuration.setText("Conf layout");
+		this.Configuration.add(this.ConfigLayout);
+		
+		//Conflayout
+		this.ConfigLayout.setText("Conf du layout");
+		this.ConfigLayout.addActionListener(this);
+		
 		//stringTextArea
 		this.stringTextArea.setBorder(new LineBorder(Color.black));
 		this.stringTextArea.setText("Zone pour les plugins sur les String");
@@ -124,7 +148,8 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new GridLayout(1,1));
+		this.LayoutSize();
+		desktop.setLayout(new GridLayout(Integer.parseInt(xField.getText()),Integer.parseInt(yField.getText())));
 		//this.getContentPane().add(this.stringTextArea);
 		//this.getContentPane().add(this.intTextArea);
 	//	this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
@@ -178,6 +203,11 @@ public class MainFrame extends JFrame implements ActionListener{
 			this.setVisible(false);
 		}
 		else {
+			if(arg0.getSource()== this.ConfigLayout){
+
+				this.LayoutSize();
+
+            	}
 			if( arg0.getSource() == this.loadMenuItem ){
 				JFileChooser f = new JFileChooser();
 				
@@ -202,6 +232,7 @@ public class MainFrame extends JFrame implements ActionListener{
 					this.ActionFromPlugins(arg0);
 				}
 			}
+			
 		}
 		
 	}
@@ -296,6 +327,44 @@ public class MainFrame extends JFrame implements ActionListener{
 			}
 		}
 		
+	}
+	
+	private void LayoutSize(){
+	      JPanel myPanel = new JPanel();
+	      myPanel.setLayout(new GridBagLayout());
+	      GridBagConstraints gbc = new GridBagConstraints();
+	      // Position du premier element
+	      gbc.gridx=0;
+	      gbc.gridy=0;
+	      gbc.gridwidth = 4;
+	      myPanel.add(new JLabel("<html>Donnez le nombre de cases de votre Jdash !</br></html>"),gbc);
+	      //----
+	      gbc.gridwidth=1;
+	      gbc.gridx = 0;
+	      gbc.gridy = 1;
+	      myPanel.add(new JLabel("x:"),gbc);
+	      
+	      gbc.gridx = 2;
+	      gbc.gridy = 1;
+	      gbc.gridwidth= GridBagConstraints.REMAINDER;
+	      myPanel.add(xField,gbc);
+	      //--------
+	      gbc.gridwidth=1;
+	      gbc.gridx=0;
+	      gbc.gridy=2;
+	      myPanel.add(new JLabel("y:"),gbc);
+	      
+	      gbc.gridx = 2;
+	      gbc.gridy = 2;
+	      gbc.gridwidth=GridBagConstraints.REMAINDER;
+	      myPanel.add(yField,gbc);
+
+	      int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	               "Con' Layout", JOptionPane.OK_CANCEL_OPTION);
+	      if (result == JOptionPane.OK_OPTION) {
+	         System.out.println("Longeur : " + Integer.parseInt(xField.getText()));
+	         System.out.println("Largeur: " + Integer.parseInt(yField.getText()));
+	      }
 	}
 	
 }
