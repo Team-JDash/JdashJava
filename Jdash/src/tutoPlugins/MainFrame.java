@@ -17,11 +17,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import stringPluginsExemple.testclock;
 import tutoPlugins.plugins.ImagePlugins;
 import tutoPlugins.plugins.IntPlugins;
 import tutoPlugins.plugins.PluginsLoader;
 import tutoPlugins.plugins.StringPlugins;
+
+
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -119,12 +120,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.testtext.setBorder(new LineBorder(Color.black));
 		this.testtext.setText("Zone de test text ! ");
 		
-		//testclock clok = new testclock();
+		
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new GridLayout(2,2));
-		this.getContentPane().add(this.stringTextArea);
+		this.setLayout(new GridLayout(1,1));
+		//this.getContentPane().add(this.stringTextArea);
 		//this.getContentPane().add(this.intTextArea);
 	//	this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
 		
