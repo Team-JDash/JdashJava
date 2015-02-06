@@ -1,46 +1,31 @@
 package tutoPlugins;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
+import stringPluginsExemple.testclock;
 import tutoPlugins.plugins.ImagePlugins;
 import tutoPlugins.plugins.IntPlugins;
 import tutoPlugins.plugins.PluginsLoader;
 import tutoPlugins.plugins.StringPlugins;
 
-/**
- * Frame principale du programme de test des plugins
- * @author Lainé Vincent (dev01, http://vincentlaine.developpez.com/ )
- *
- */
+
 public class MainFrame extends JFrame implements ActionListener{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4932662545205980307L;
 	
 	private JDesktopPane MainPane;
 	private JTextArea testtext;
@@ -134,13 +119,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.testtext.setBorder(new LineBorder(Color.black));
 		this.testtext.setText("Zone de test text ! ");
 		
-		
+		testclock clok = new testclock();
 		this.setSize(800,600);
 		this.setJMenuBar(this.menuBar);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new GridLayout(3,1));
+		this.setLayout(new GridLayout(2,2));
 		this.getContentPane().add(this.stringTextArea);
-		this.getContentPane().add(this.intTextArea);
+		//this.getContentPane().add(this.intTextArea);
+		this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
 		
 		//---------------------INTERNAL FRAME---------31/01/2015---PAUL---
 		//On crée un desktopPane qui va recupérer toutes nos internal frame

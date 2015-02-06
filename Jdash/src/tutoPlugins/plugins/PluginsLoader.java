@@ -7,11 +7,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarFile;
 
-/**
- * Classe gérant le chargement et la validation des plugins
- * @author Lainé Vincent (dev01, http://vincentlaine.developpez.com/ )
- *
- */
 public class PluginsLoader {
 
 	private String[] files;
