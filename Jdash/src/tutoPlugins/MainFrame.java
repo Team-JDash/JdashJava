@@ -41,18 +41,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
-	private JMenu stringPluginsMenu;
-	private JMenu intPluginsMenu;
 	private JMenu ImagePlugingsMenu;
 	private JMenu Configuration;
 	
 	private JMenuItem exitMenuItem;
 	private JMenuItem loadMenuItem;
-	private JMenuItem runPluginsMenuItem;
+	//private JMenuItem runPluginsMenuItem;
 	private JMenuItem ConfigLayout;
-	private JTextArea stringTextArea;
-	private JTextArea intTextArea;
-
+	
 	private PluginsLoader pluginsLoader;
 	private ArrayList files;
 	private ArrayList stringPlugins;
@@ -77,37 +73,29 @@ public class MainFrame extends JFrame implements ActionListener{
 	private void initialize(){
 		this.menuBar = new JMenuBar();
 		this.fileMenu = new JMenu();
-		this.stringPluginsMenu = new JMenu();
-		this.intPluginsMenu = new JMenu();
+
 		this.ImagePlugingsMenu = new JMenu();
 		this.Configuration = new JMenu();
 		this.ConfigLayout = new JMenuItem();
 		this.exitMenuItem = new JMenuItem();
 		this.loadMenuItem = new JMenuItem();
-		this.runPluginsMenuItem = new JMenuItem();
-		this.stringTextArea = new JTextArea();
-		this.intTextArea = new JTextArea();
+		//this.runPluginsMenuItem = new JMenuItem();
+
 		this.testtext = new JTextArea();
 		
 		//menuBar
 		this.menuBar.add(this.fileMenu);
-		this.menuBar.add(this.stringPluginsMenu);
-		this.menuBar.add(this.intPluginsMenu);
 		this.menuBar.add(this.ImagePlugingsMenu);
 		this.menuBar.add(this.Configuration);
 		
 		//fileMenu
 		this.fileMenu.setText("Fichier");
 		this.fileMenu.add(this.loadMenuItem);
-		this.fileMenu.add(this.runPluginsMenuItem);
+		//this.fileMenu.add(this.runPluginsMenuItem);
 		this.fileMenu.addSeparator();
 		this.fileMenu.add(this.exitMenuItem);
 		
-		//stringPluginsMenu
-		this.stringPluginsMenu.setText("Manipulation de String");
-		
-		//intPluginsMenu
-		this.intPluginsMenu.setText("Manipulation de int");
+
 		
 		//imagepluginsmenu
 		this.ImagePlugingsMenu.setText("Manip' image");
@@ -121,8 +109,8 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.loadMenuItem.addActionListener(this);
 		
 		//runPluginsMenuItem
-		this.runPluginsMenuItem.setText("Lancer les plugins charger");
-		this.runPluginsMenuItem.addActionListener(this);
+		//this.runPluginsMenuItem.setText("Lancer les plugins charger");
+		//this.runPluginsMenuItem.addActionListener(this);
 		
 		//Config du layout
 		this.Configuration.setText("Conf layout");
@@ -132,13 +120,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		this.ConfigLayout.setText("Conf du layout");
 		this.ConfigLayout.addActionListener(this);
 		
-		//stringTextArea
-		this.stringTextArea.setBorder(new LineBorder(Color.black));
-		this.stringTextArea.setText("Zone pour les plugins sur les String");
-		
-		//intTextArea
-		this.intTextArea.setBorder(new LineBorder(Color.black));
-		this.intTextArea.setText("Zone pour les plugins sur les int");
 		
 		//Zone de text pour l'internalFrame
 		this.testtext.setBorder(new LineBorder(Color.black));
@@ -152,7 +133,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		desktop.setLayout(new GridLayout(Integer.parseInt(xField.getText()),Integer.parseInt(yField.getText())));
 		//this.getContentPane().add(this.stringTextArea);
 		//this.getContentPane().add(this.intTextArea);
-	//	this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
+		//this.getContentPane().add(clok.actionOnPlugin(jif, desktop));
 		
 		//---------------------INTERNAL FRAME---------31/01/2015---PAUL---
 		//On crée un desktopPane qui va recupérer toutes nos internal frame
@@ -213,24 +194,23 @@ public class MainFrame extends JFrame implements ActionListener{
 				
 				if(f.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
 					this.files.add(f.getSelectedFile().getAbsolutePath());
+					
+						this.pluginsLoader.setFiles(this.convertArrayListToArrayString(this.files));
+						
+						try {
+							this.fillImagePlugins(this.pluginsLoader.loadAllImagePlugins());
+						} catch (Exception e) {
+							
+							e.printStackTrace();
+						}
+					
 				}
 				
 			}
 			else {
-				if( this.runPluginsMenuItem == arg0.getSource() ){
-					this.pluginsLoader.setFiles(this.convertArrayListToArrayString(this.files));
-					
-					try {
-						this.fillStringPlugins(this.pluginsLoader.loadAllStringPlugins());
-						this.fillImagePlugins(this.pluginsLoader.loadAllImagePlugins());
-					} catch (Exception e) {
-						
-						e.printStackTrace();
-					}
-				}
-				else {
+
 					this.ActionFromPlugins(arg0);
-				}
+				
 			}
 			
 		}
@@ -247,24 +227,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		return tmp;
 	}
 
-	private void fillStringPlugins(StringPlugins[] plugins){
-		
-		JMenuItem menuItem ;
-	
-		for(int index = 0 ; index < plugins.length; index ++ ){
-			this.stringPlugins.add(plugins[index]);
-			
-			menuItem = new JMenuItem();
-			menuItem.setText(plugins[index].getLibelle() );
-			menuItem.addActionListener(this);
-			//Ajout dans la collection de JMenuItem pour détection du click
-			//this.stringPluginsMenuItem.add(menuItem);
-			//Ajout dans le menu
-			this.stringPluginsMenu.add(menuItem);
-		}
-		
-		
-	}
+
 	
 	private void fillImagePlugins(ImagePlugins[] imagePlugins){
 		
@@ -287,27 +250,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	private void ActionFromPlugins(ActionEvent e){
-		
-		for(int index = 0 ; index < this.stringPlugins.size(); index ++ )
-		{
-			if(e.getActionCommand().equals( ((StringPlugins)this.stringPlugins.get(index)).getLibelle() )){
-				System.out.println("Imageplugins size :"+this.stringPlugins.size());
-				this.stringTextArea.setText(((StringPlugins)this.stringPlugins.get(index)).actionOnString(this.stringTextArea.getText()));
-				
-				return ;
-			}
-		}
-		
-		for(int index = 0 ; index < this.intPlugins.size(); index ++ ){
-			if(e.getActionCommand().equals( ((IntPlugins)this.intPlugins.get(index)).getLibelle() )){
-				System.out.println("Imageplugins size :"+this.intPlugins.size());
-				int res = ((IntPlugins)this.intPlugins.get(index)).actionOnInt( Integer.parseInt(this.stringTextArea.getText()) );
-				
-				this.stringTextArea.setText( new Integer(res).toString() );
-				
-				return ;
-			}
-		}
+			
 		
 		for(int index = 0 ; index < this.ImagePlugins.size(); index ++ ){
 		
