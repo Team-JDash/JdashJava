@@ -196,14 +196,14 @@ public class MainFrame extends JFrame implements ActionListener{
 					this.files.add(f.getSelectedFile().getAbsolutePath());
 					
 						this.pluginsLoader.setFiles(this.convertArrayListToArrayString(this.files));
-						
+						System.out.println("Taille ArraylisttoArrayString: "+this.convertArrayListToArrayString(this.files).length);
 						try {
 							this.fillImagePlugins(this.pluginsLoader.loadAllImagePlugins());
 						} catch (Exception e) {
 							
 							e.printStackTrace();
 						}
-					
+					this.files.clear();
 				}
 				
 			}
@@ -233,8 +233,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		JMenuItem menuItem ;
 	
-		for(int index = 0 ; index < imagePlugins.length; index ++ ){
+		for(int index = imagePlugins.length-1 ; index < imagePlugins.length; index ++ ){
 			this.ImagePlugins.add(imagePlugins[index]);
+			System.out.println(imagePlugins[index].getLibelle()+""+imagePlugins.length);
 			
 			menuItem = new JMenuItem();
 			menuItem.setText(imagePlugins[index].getLibelle() );
@@ -256,9 +257,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 			if(e.getActionCommand().equals( ((ImagePlugins)this.ImagePlugins.get(index)).getLibelle() )){
 				
-				
-				//this.testtext.setText(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(this.stringTextArea.getText()));	
-				this.desktop.add(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(this.jif,this.desktop));
+				this.desktop.add(((ImagePlugins)this.ImagePlugins.get(index)).actionOnPlugin(new JInternalFrame(),this.desktop));
 				try {//On remplie tout 'espace disponible puis on enlève toutes les barres pour avoir une fenetre "transparente"
 					jif.setMaximum(true);
 					((javax.swing.plaf.basic.BasicInternalFrameUI) jif.getUI()).setNorthPane(null);	
@@ -266,6 +265,7 @@ public class MainFrame extends JFrame implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 				return ;
 			}
 		}

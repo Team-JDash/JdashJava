@@ -7,7 +7,7 @@ public class classTest implements StringPlugins {
 	public String actionOnString(String arg0) {
  
 		//return " ** - " + arg0 + " - ** ";
-		return "First own plugin mother fucker ! ";
+		return "First own plugin ! ";
 	}
  
 	public String getLibelle() {

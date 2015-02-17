@@ -27,7 +27,6 @@ public class PluginsLoader {
 	
 	/**
 	 * Constucteur initialisant le tableau de fichier à charger.
-	 * @param files Tableau de String contenant la liste des fichiers à charger.
 	 */
 	public PluginsLoader(String[] files){
 		this();
@@ -36,7 +35,6 @@ public class PluginsLoader {
 	
 	/**
 	 * Défini l'ensemble des fichiers à charger
-	 * @param files
 	 */
 	public void setFiles(String[] files ){
 		this.files = files;
@@ -44,26 +42,9 @@ public class PluginsLoader {
 	
 	/**
 	 * Fonction de chargement de tout les plugins de type StringPlugins
-	 * @return Une collection de StringPlugins contenant les instances des plugins
-	 * @throws Exception si file = null ou file.length = 0
-	 */
-	public StringPlugins[] loadAllStringPlugins() throws Exception {
-		
-		this.initializeLoader();
-		
-		StringPlugins[] tmpPlugins = new StringPlugins[this.classStringPlugins.size()];
-		
-		for(int index = 0 ; index < tmpPlugins.length; index ++ ){
-			
-			//On créer une nouvelle instance de l'objet contenu dans la liste grâce à newInstance() 
-			//et on le cast en StringPlugins. Vu que la classe implémente StringPlugins, le cast est toujours correct
-			tmpPlugins[index] = (StringPlugins)((Class)this.classStringPlugins.get(index)).newInstance() ;
-			
-		}
-		
-		return tmpPlugins;
-	}
 	
+	 */
+
 	public ImagePlugins[] loadAllImagePlugins() throws Exception {
 		
 		this.initializeLoader();
@@ -81,39 +62,18 @@ public class PluginsLoader {
 		return tmpPlugins;
 	}
 	
-	/**
-	 * Fonction de chargement de tout les plugins de type IntPlugins
-	 * @return Une collection de IntPlugins contenant les instances des plugins
-	 * @throws Exception si file = null ou file.length = 0
-	 */
-	public IntPlugins[] loadAllIntPlugins() throws Exception {
-		
-		this.initializeLoader();
-		
-		IntPlugins[] tmpPlugins = new IntPlugins[this.classIntPlugins.size()];
-		
-		for(int index = 0 ; index < tmpPlugins.length; index ++ ){
-			
-			//On créer une nouvelle instance de l'objet contenu dans la liste grâce à newInstance() 
-			//et on le cast en StringPlugins. Vu que la classe implémente StringPlugins, le cast est toujours correct
-			tmpPlugins[index] = (IntPlugins)((Class)this.classIntPlugins.get(index)).newInstance() ;
-			
-		}
-		
-		return tmpPlugins;
-		
-	}
+
 	
 	private void initializeLoader() throws Exception{
 		//On vérifie que la liste des plugins à charger à été initialisé
 		if(this.files == null || this.files.length == 0 ){
 			throw new Exception("Pas de fichier spécifié");
 		}
-
 		//Pour eviter le double chargement des plugins
-		if(this.classIntPlugins.size() != 0 || this.classStringPlugins.size() != 0 || this.classImagePlugins.size() != 0){
+		/*if(this.classImagePlugins.size() != 0){
+			System.out.println("Double chargement");
 			return ;
-		}
+		}*/
 		
 		File[] f = new File[this.files.length];
 //		Pour charger le .jar en memoire
@@ -124,11 +84,14 @@ public class PluginsLoader {
 		Enumeration enumeration;
 		//Pour déterminé quels sont les interfaces implémentées
 		Class tmpClass = null;
-		
-		for(int index = 0 ; index < f.length ; index ++ ){
-			
+		//§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§ midif f.length -> this.files.length
+		for(int index = 0 ; index < this.files.length ; index ++ ){
+			/*for(int check=0;check<this.files.length;check++){
+				if(f[check].toString()==(this.files[check]))
+					System.out.println(f[check]+" = "+ this.files[check]);
+			}*/
 			f[index] = new File(this.files[index]);
-			
+			System.out.println("Nom files Initializer: "+ f[index]);
 			if( !f[index].exists() ) {
 				break;
 			}
@@ -160,18 +123,10 @@ public class PluginsLoader {
 						//Une classe ne doit pas appartenir à deux catégories de plugins différents. 
 						//Si tel est le cas on ne la place que dans la catégorie de la première interface correct
 						// trouvée
-						if(tmpClass.getInterfaces()[i].getName().toString().equals("tutoPlugins.plugins.StringPlugins") ) {
-							this.classStringPlugins.add(tmpClass);
+						if(tmpClass.getInterfaces()[i].getName().toString().equals("tutoPlugins.plugins.ImagePlugins")){
+							this.classImagePlugins.add(tmpClass);
 						}
-						else {
-							if( tmpClass.getInterfaces()[i].getName().toString().equals("tutoPlugins.plugins.IntPlugins") ) {
-								this.classIntPlugins.add(tmpClass);
-							}
-							else if(tmpClass.getInterfaces()[i].getName().toString().equals("tutoPlugins.plugins.ImagePlugins")){
-								this.classImagePlugins.add(tmpClass);
-							}
-						
-						}
+
 					}
 					
 				}

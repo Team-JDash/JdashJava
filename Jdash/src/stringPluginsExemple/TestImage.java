@@ -54,7 +54,8 @@ public class TestImage implements ImagePlugins {
 		}
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 		jif.add(picLabel);
-		
+		//jif.setSize(400,400);
+		jif.setVisible(true);
 		//On rajoute la zone de texte puis on rend le tout visible
 		//jif.add(this.testtext);
 		//jif.setVisible(true);
